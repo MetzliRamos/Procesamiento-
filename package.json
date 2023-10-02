@@ -4,6 +4,7 @@
   "description": "Procesamiento de imagenes con js",
   "main": "./src/index.js",
   "scripts": {
+    "start": "http-server -p 8452",
     "build": "webpack --mode production",
     "build-dev": "webpack --mode development",
     "build-external": "webpack --config ./external/webpack.config.js"
@@ -21,5 +22,8 @@
   "devDependencies": {
     "webpack": "4.44.1",
     "webpack-cli": "3.3.12"
+  },
+  "dependencies": {
+    "http-server": "^14.1.1"
   }
 }
