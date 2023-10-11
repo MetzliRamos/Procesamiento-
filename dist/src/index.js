@@ -76,6 +76,12 @@ function umbralizado(evt) {
     var imagenSal = new ImageType(pantalla1, imgLocal.getImage());
     imagenSal.imageArray2DtoData(pantalla2, MathImg.toUmbral(imagenSal, umbral));
 }
+function realce(evt) {
+    var args = prompt('Ingresa el valor del realce');
+    var realce = parseFloat(args);
+    var imagenSal = new ImageType(pantalla1, imgLocal.getImage());
+    imagenSal.imageArray2DtoData(pantalla2, MathImg.torealce(imagenSal, realce));
+}
 function desfaseX(evt) {
     var args = prompt('Ingresa el valor del desfase en X');
     var des = parseFloat(args);
@@ -409,6 +415,7 @@ document.getElementById("op-tricolorhorizontal").addEventListener('click', conve
 document.getElementById("op-gamma").addEventListener('click', correccionGamma, false);
 document.getElementById("op-umbral1").addEventListener('click', umbralizado, false);
 document.getElementById("op-umbral-2-limites").addEventListener('click', umbral2limites, false);
+document.getElementById("op-realce").addEventListener('click', realce, false);
 document.getElementById("op-desfaseX").addEventListener('click', desfaseX, false);
 document.getElementById("op-desfaseY").addEventListener('click', desfaseY, false);
 document.getElementById("op-desfaseD").addEventListener('click', desfaseD, false);
