@@ -5,7 +5,7 @@ import { MathImg } from "./MathImg.js";
 import { Particle } from "./particle.js";
 import { ParticleText } from "./particle.js";
 import { CanvasLocal } from './canvasLocal.js';
-import { TunnelCircle } from './nueva.js';
+import { TunnelCircle, ChangingMaze } from './nueva.js';
 
 
 
@@ -353,6 +353,33 @@ function Ondaexpansiva() {
   initTunnel();
   animateTunnel();
 }
+
+//seccion operacion 2 
+
+let changingMaze: ChangingMaze;
+
+function initChangingMaze() {
+  const mazeCanvas = pantalla2; 
+  const mazeSize = 20; // Tamaño del laberinto
+  const cellSize = 20; // Tamaño de cada celda en el laberinto
+
+  changingMaze = new ChangingMaze(mazeCanvas, mazeSize, cellSize);
+}
+
+function animateChangingMaze() {
+
+  ctx.drawImage(imgLocal.getImage(), 0, 0, pantalla2.canvas.width, pantalla2.canvas.height);
+
+
+  changingMaze.update();
+  changingMaze.draw();
+
+  requestAnimationFrame(animateChangingMaze);
+}
+function inicioLaberintoCambiante() {
+  initChangingMaze();
+  animateChangingMaze();
+}
 //seccion de histogramas  
 function histogramas(evt: any): void{
   const imagenSal: ImageType = new ImageType(pantalla1, imgLocal.getImage());
@@ -479,3 +506,4 @@ dropZone.addEventListener('drop', imgLocal.handleFileSelect, false);
 
 //operaciones del proyect0
 document.getElementById("Ondaexpansiva").addEventListener('click', Ondaexpansiva, false);
+document.getElementById("inicioLaberintoCambiante").addEventListener('click', inicioLaberintoCambiante, false);
