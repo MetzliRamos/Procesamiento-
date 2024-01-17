@@ -19,48 +19,56 @@ var TunnelCircle = /** @class */ (function () {
     return TunnelCircle;
 }());
 export { TunnelCircle };
-var ChangingMaze = /** @class */ (function () {
-    function ChangingMaze(ctx, mazeSize, cellSize) {
+var MazeBall = /** @class */ (function () {
+    function MazeBall(x, y, size, ctx, maze) {
+        this.x = x;
+        this.y = y;
+        this.size = size;
         this.ctx = ctx;
-        this.mazeSize = mazeSize;
-        this.cellSize = cellSize;
-        this.colors = ['#ffffff', '#000000']; // Colores para las paredes y pasillos
-        // Inicializa el laberinto
-        this.generateMaze();
+        this.maze = maze;
+        this.mazeWidth = maze[0].length;
+        this.mazeHeight = maze.length;
     }
-    // Genera un laberinto aleatorio
-    ChangingMaze.prototype.generateMaze = function () {
-        this.maze = [];
-        for (var i = 0; i < this.mazeSize; i++) {
-            var row = [];
-            for (var j = 0; j < this.mazeSize; j++) {
-                row.push(Math.random() < 0.5 ? 1 : 0); // 1 representa pared, 0 representa pasillo
-            }
-            this.maze.push(row);
-        }
-    };
-    // Actualiza el laberinto cambiante
-    ChangingMaze.prototype.update = function () {
-        // Cambia aleatoriamente algunas celdas del laberinto
-        for (var i = 0; i < this.mazeSize; i++) {
-            for (var j = 0; j < this.mazeSize; j++) {
-                if (Math.random() < 0.02) { // Probabilidad de cambio, ajusta según sea necesario
-                    this.maze[i][j] = this.maze[i][j] === 1 ? 0 : 1;
+    MazeBall.prototype.update = function () {
+        var direction = Math.floor(Math.random() * 4);
+        var currentX = this.x;
+        var currentY = this.y;
+        switch (direction) {
+            case 0:
+                if (this.y > 0 && this.maze[this.y - 1][this.x] === 0) {
+                    this.y -= 1;
                 }
-            }
+                break;
+            case 1:
+                if (this.y < this.mazeHeight - 1 && this.maze[this.y + 1][this.x] === 0) {
+                    this.y += 1;
+                }
+                break;
+            case 2:
+                if (this.x > 0 && this.maze[this.y][this.x - 1] === 0) {
+                    this.x -= 1;
+                }
+                break;
+            case 3:
+                if (this.x < this.mazeWidth - 1 && this.maze[this.y][this.x + 1] === 0) {
+                    this.x += 1;
+                }
+                break;
+            default:
+                break;
+        }
+        if (this.maze[this.y][this.x] === 1) {
+            this.x = currentX;
+            this.y = currentY;
         }
     };
-    // Dibuja el laberinto en el lienzo
-    ChangingMaze.prototype.draw = function () {
-        this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-        for (var i = 0; i < this.mazeSize; i++) {
-            for (var j = 0; j < this.mazeSize; j++) {
-                var color = this.colors[this.maze[i][j]];
-                this.ctx.fillStyle = color;
-                this.ctx.fillRect(j * this.cellSize, i * this.cellSize, this.cellSize, this.cellSize);
-            }
-        }
+    MazeBall.prototype.draw = function () {
+        // Dibuja la bolita
+        this.ctx.fillStyle = 'red'; // Color de la bolita
+        this.ctx.beginPath();
+        this.ctx.arc(this.x * this.size + this.size / 2, this.y * this.size + this.size / 2, this.size / 2, 0, Math.PI * 2);
+        this.ctx.fill();
     };
-    return ChangingMaze;
+    return MazeBall;
 }());
-export { ChangingMaze };
+export { MazeBall };

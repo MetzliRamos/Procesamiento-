@@ -5,7 +5,7 @@ import { MathImg } from "./MathImg.js";
 import { Particle } from "./particle.js";
 import { ParticleText } from "./particle.js";
 import { CanvasLocal } from './canvasLocal.js';
-import { TunnelCircle, ChangingMaze } from './nueva.js';
+import { TunnelCircle, MazeBall } from './nueva.js';
 
 
 
@@ -356,30 +356,75 @@ function Ondaexpansiva() {
 
 //seccion operacion 2 
 
-let changingMaze: ChangingMaze;
 
-function initChangingMaze() {
-  const mazeCanvas = pantalla2; 
-  const mazeSize = 20; // Tamaño del laberinto
-  const cellSize = 20; // Tamaño de cada celda en el laberinto
+let mazeArray: number[][] = []; 
+let mazeBall: MazeBall;
 
-  changingMaze = new ChangingMaze(mazeCanvas, mazeSize, cellSize);
+function initMazeBall() {
+  const largerMaze = [
+    [0, 1, 0, 0, 1, 0, 0, 0, 0, 1],
+    [0, 0, 0, 1, 0, 0, 1, 1, 0, 0],
+    [0, 1, 0, 1, 1, 0, 0, 1, 1, 1],
+    [0, 1, 0, 0, 0, 1, 0, 0, 0, 0],
+    [0, 1, 1, 1, 0, 0, 1, 1, 1, 0],
+    [0, 0, 0, 1, 0, 1, 0, 0, 0, 0],
+    [0, 1, 1, 1, 0, 1, 1, 1, 1, 0],
+    [0, 1, 0, 0, 0, 0, 0, 1, 0, 0],
+    [0, 1, 0, 1, 1, 1, 0, 1, 1, 1],
+    [0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+  ];
+
+  mazeArray = largerMaze;
+  mazeBall = new MazeBall(0, 0, 20, ctx, mazeArray);
 }
 
-function animateChangingMaze() {
-
+function animateMazeBall() {
+ 
   ctx.drawImage(imgLocal.getImage(), 0, 0, pantalla2.canvas.width, pantalla2.canvas.height);
 
+  // Dibuja el laberinto
+  for (let i = 0; i < mazeArray.length; i++) {
+    for (let j = 0; j < mazeArray[i].length; j++) {
+      if (mazeArray[i][j] === 1) {
+        // Pared
+        ctx.fillStyle = 'black';
+        ctx.fillRect(j * 20, i * 20, 20, 20);
+      } else if (mazeArray[i][j] === 2) {
+      //destino
+        ctx.fillStyle = 'green';
+        ctx.fillRect(j * 20, i * 20, 20, 20);
+      }
+    }
+  }
 
-  changingMaze.update();
-  changingMaze.draw();
 
-  requestAnimationFrame(animateChangingMaze);
+  mazeBall.update();
+  mazeBall.draw();
+
+  //control del tiempo
+  setTimeout(() => requestAnimationFrame(animateMazeBall), 200);
 }
-function inicioLaberintoCambiante() {
-  initChangingMaze();
-  animateChangingMaze();
+
+function iniciarMazeBall() {
+  initMazeBall();
+  animateMazeBall();
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //seccion de histogramas  
 function histogramas(evt: any): void{
   const imagenSal: ImageType = new ImageType(pantalla1, imgLocal.getImage());
@@ -506,4 +551,4 @@ dropZone.addEventListener('drop', imgLocal.handleFileSelect, false);
 
 //operaciones del proyect0
 document.getElementById("Ondaexpansiva").addEventListener('click', Ondaexpansiva, false);
-document.getElementById("inicioLaberintoCambiante").addEventListener('click', inicioLaberintoCambiante, false);
+document.getElementById("inicioLaberintoCambiante").addEventListener('click', iniciarMazeBall, false);
