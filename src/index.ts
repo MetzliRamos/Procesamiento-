@@ -5,7 +5,7 @@ import { MathImg } from "./MathImg.js";
 import { Particle } from "./particle.js";
 import { ParticleText } from "./particle.js";
 import { CanvasLocal } from './canvasLocal.js';
-import { TunnelCircle, MazeBall, ColorWheel } from './nueva.js';
+import { TunnelCircle, MazeBall, ColorWheel, Clock } from './nueva.js';
 
 
 
@@ -412,23 +412,22 @@ function iniciarMazeBall() {
 
 //seccion operacion 3 
 
-// Llamada a las funciones de inicialización y animación
 function ininiarruleta() {
   const colorWheel = new ColorWheel(150, 150, 100, ctx, ['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet']);
   animateColorWheel(colorWheel);
 }
 
 function animateColorWheel(colorWheel: ColorWheel) {
-  // Dibuja la imagen original
+
   ctx.drawImage(imgLocal.getImage(), 0, 0, pantalla2.canvas.width, pantalla2.canvas.height);
 
   // Dibuja la rueda de colores
   colorWheel.draw();
 
-  // Actualiza la rueda de colores
+
   colorWheel.update();
 
-  // Llama a la animación de forma recursiva
+ 
   requestAnimationFrame(() => animateColorWheel(colorWheel));
 }
 
@@ -436,6 +435,39 @@ function animateColorWheel(colorWheel: ColorWheel) {
 function iniciarwhell() {
   ininiarruleta();
 }
+
+//seccion de operacion 4 
+const clocks: Clock[] = [];
+
+function generateClocks(numClocks: number) {
+  for (let i = 0; i < numClocks; i++) {
+    const x = Math.random() * pantalla2.canvas.width;
+    const y = Math.random() * pantalla2.canvas.height;
+    const radius = Math.random() * 20 + 10; // Radio aleatorio entre 10 y 30
+    const numNeedles = Math.floor(Math.random() * 3) + 1; // Entre 1 y 3 agujas
+    clocks.push(new Clock(x, y, radius, numNeedles, ctx));
+  }
+}
+
+function animateClocks() {
+  ctx.drawImage(imgLocal.getImage(), 0, 0, pantalla2.canvas.width, pantalla2.canvas.height);
+
+  for (let i = 0; i < clocks.length; i++) {
+    clocks[i].update();
+    clocks[i].draw();
+  }
+
+  requestAnimationFrame(animateClocks);
+}
+
+function iniciarRelojes() {
+  const numberOfClocks = 10;
+  generateClocks(numberOfClocks);
+
+  animateClocks();
+}
+
+////////////////////////////////////
 function histogramas(evt: any): void{
   const imagenSal: ImageType = new ImageType(pantalla1, imgLocal.getImage());
   let canvas1: HTMLCanvasElement = lienzo2;
@@ -563,3 +595,5 @@ dropZone.addEventListener('drop', imgLocal.handleFileSelect, false);
 document.getElementById("Ondaexpansiva").addEventListener('click', Ondaexpansiva, false);
 document.getElementById("inicioLaberintoCambiante").addEventListener('click', iniciarMazeBall, false);
 document.getElementById("iniciarwhell").addEventListener('click', iniciarwhell, false);
+document.getElementById("iniciarRelojes").addEventListener('click', iniciarRelojes, false);
+

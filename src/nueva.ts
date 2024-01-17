@@ -128,3 +128,91 @@ export class TunnelCircle {
       this.angle += 0.01;
     }
   }
+
+
+  
+ export  class Clock {
+    protected x: number;
+    protected y: number;
+    protected radius: number;
+    protected needles: ClockNeedle[];
+    protected ctx: CanvasRenderingContext2D;
+  
+    constructor(x: number, y: number, radius: number, numNeedles: number, ctx: CanvasRenderingContext2D) {
+      this.x = x;
+      this.y = y;
+      this.radius = radius;
+      this.ctx = ctx;
+      this.needles = [];
+  
+      for (let i = 0; i < numNeedles; i++) {
+        const needle = new ClockNeedle(this.x, this.y, this.radius, ctx);
+        this.needles.push(needle);
+      }
+    }
+  
+    public draw() {
+      // Dibuja el cuerpo del reloj
+      this.ctx.fillStyle = 'white';
+      this.ctx.beginPath();
+      this.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      this.ctx.fill();
+      this.ctx.closePath();
+  
+      // Dibuja las agujas
+      for (const needle of this.needles) {
+        needle.draw();
+      }
+    }
+  
+    public update() {
+      // Actualiza las agujas y el cuerpo del reloj
+      for (const needle of this.needles) {
+        needle.update();
+      }
+  
+      // Aplica lógica de desaparición al cuerpo del reloj
+      if (Math.random() < 0.01) {
+        this.radius = 0;
+      }
+    }
+  }
+  
+  export class ClockNeedle {
+    protected x: number;
+    protected y: number;
+    protected radius: number;
+    protected angle: number;
+    protected ctx: CanvasRenderingContext2D;
+  
+    constructor(x: number, y: number, radius: number, ctx: CanvasRenderingContext2D) {
+      this.x = x;
+      this.y = y;
+      this.radius = radius;
+      this.angle = Math.random() * 360;
+      this.ctx = ctx;
+    }
+  
+    public draw() {
+      const endX = this.x + Math.cos((this.angle * Math.PI) / 180) * this.radius;
+      const endY = this.y + Math.sin((this.angle * Math.PI) / 180) * this.radius;
+  
+      this.ctx.strokeStyle = 'black';
+      this.ctx.lineWidth = 2;
+      this.ctx.beginPath();
+      this.ctx.moveTo(this.x, this.y);
+      this.ctx.lineTo(endX, endY);
+      this.ctx.stroke();
+      this.ctx.closePath();
+    }
+  
+    public update() {
+      this.angle += 10;
+  
+      // Aplica lógica de desaparición a las agujas
+      if (Math.random() < 0.01) {
+        this.radius = 0;
+      }
+    }
+  }
+  
