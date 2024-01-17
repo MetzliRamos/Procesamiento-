@@ -72,3 +72,33 @@ var MazeBall = /** @class */ (function () {
     return MazeBall;
 }());
 export { MazeBall };
+var ColorWheel = /** @class */ (function () {
+    function ColorWheel(x, y, radius, ctx, colors) {
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+        this.ctx = ctx;
+        this.colors = colors;
+        this.angle = 0;
+    }
+    ColorWheel.prototype.draw = function () {
+        var numColors = this.colors.length;
+        var angleIncrement = (2 * Math.PI) / numColors;
+        for (var i = 0; i < numColors; i++) {
+            var startAngle = this.angle + i * angleIncrement;
+            var endAngle = startAngle + angleIncrement;
+            this.ctx.beginPath();
+            this.ctx.moveTo(this.x, this.y);
+            this.ctx.arc(this.x, this.y, this.radius, startAngle, endAngle);
+            this.ctx.fillStyle = this.colors[i];
+            this.ctx.fill();
+            this.ctx.closePath();
+        }
+    };
+    ColorWheel.prototype.update = function () {
+        // Actualiza el ángulo para hacer girar la rueda
+        this.angle += 0.01;
+    };
+    return ColorWheel;
+}());
+export { ColorWheel };
