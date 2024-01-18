@@ -5,7 +5,7 @@ import { MathImg } from "./MathImg.js";
 import { Particle } from "./particle.js";
 import { ParticleText } from "./particle.js";
 import { CanvasLocal } from './canvasLocal.js';
-import { TunnelCircle, MazeBall, ColorWheel, Clock } from './nueva.js';
+import { TunnelCircle, MazeBall, ColorWheel, Clock, Car  } from './nueva.js';
 
 
 
@@ -467,6 +467,56 @@ function iniciarRelojes() {
   animateClocks();
 }
 
+
+// seccion operacion 5
+
+let car: Car;
+
+
+
+function initCar() {
+  car = new Car(50, 50, 30, 15, ctx, 'blue'); 
+}
+
+function drawRoad() {
+
+  ctx.drawImage(imgLocal.getImage(), 0, 0, pantalla2.canvas.width, pantalla2.canvas.height);
+
+
+  ctx.fillStyle = 'white';
+  ctx.fillRect(30, 0, 5, pantalla2.canvas.height);
+  ctx.fillRect(pantalla2.canvas.width - 35, 0, 5, pantalla2.canvas.height);
+
+  // Línea divisoria amarilla
+  ctx.fillStyle = 'yellow';
+  ctx.fillRect(pantalla2.canvas.width / 2 - 2.5, 0, 5, pantalla2.canvas.height);
+}
+
+function animateCar() {
+  drawRoad();
+
+  // Mueve el auto hacia la posición del mouse
+  if (car) {
+    const targetY = mouse.y - car.height / 2; // Ajusta según el tamaño del auto
+    const distance = targetY - car.y;
+
+    // Suaviza el movimiento del auto hacia la posición del mouse
+    car.y += distance * 0.1;
+
+    // Limita la posición del auto para evitar que salga de la pantalla
+    car.y = Math.max(0, Math.min(pantalla2.canvas.height - car.height, car.y));
+
+    car.draw();
+  }
+
+  requestAnimationFrame(animateCar);
+}
+
+function iniciarAnimacionCar() {
+
+  initCar();
+  animateCar();
+}
 ////////////////////////////////////
 function histogramas(evt: any): void{
   const imagenSal: ImageType = new ImageType(pantalla1, imgLocal.getImage());
@@ -596,4 +646,4 @@ document.getElementById("Ondaexpansiva").addEventListener('click', Ondaexpansiva
 document.getElementById("inicioLaberintoCambiante").addEventListener('click', iniciarMazeBall, false);
 document.getElementById("iniciarwhell").addEventListener('click', iniciarwhell, false);
 document.getElementById("iniciarRelojes").addEventListener('click', iniciarRelojes, false);
-
+document.getElementById("iniciarauto").addEventListener('click', iniciarAnimacionCar, false);

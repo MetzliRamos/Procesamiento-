@@ -216,3 +216,53 @@ export class TunnelCircle {
     }
   }
   
+  export class Car {
+    public x: number;
+    public y: number;
+    protected width: number;
+    public height: number;
+    protected ctx: CanvasRenderingContext2D;
+    protected color: string;
+  
+    constructor(x: number, y: number, width: number, height: number, ctx: CanvasRenderingContext2D, color: string) {
+      this.x = x;
+      this.y = y;
+      this.width = width;
+      this.height = height;
+      this.ctx = ctx;
+      this.color = color;
+    }
+  
+    public draw() {
+      // Cuerpo del auto
+      this.ctx.fillStyle = this.color;
+      this.ctx.fillRect(this.x, this.y, this.width, this.height);
+  
+      // Techo del auto
+      this.ctx.beginPath();
+      this.ctx.moveTo(this.x, this.y);
+      this.ctx.lineTo(this.x + this.width, this.y);
+      this.ctx.lineTo(this.x + this.width * 0.8, this.y - this.height * 0.5);
+      this.ctx.lineTo(this.x + this.width * 0.2, this.y - this.height * 0.5);
+      this.ctx.closePath();
+      this.ctx.fillStyle = this.color;
+      this.ctx.fill();
+  
+      // Ruedas
+      const wheelRadius = this.height * 0.25;
+      this.ctx.beginPath();
+      this.ctx.arc(this.x + this.width * 0.2, this.y + this.height, wheelRadius, 0, Math.PI * 2);
+      this.ctx.arc(this.x + this.width * 0.8, this.y + this.height, wheelRadius, 0, Math.PI * 2);
+      this.ctx.fillStyle = 'black';
+      this.ctx.fill();
+      this.ctx.closePath();
+    }
+  
+    public move(speed: number) {
+      this.y += speed;
+      if (this.y > this.ctx.canvas.height) {
+        this.y = -this.height; // Reinicia la posición si el auto sale de la pantalla
+      }
+    }
+  }
+  
