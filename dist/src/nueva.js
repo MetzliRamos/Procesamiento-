@@ -210,3 +210,35 @@ var Car = /** @class */ (function () {
     return Car;
 }());
 export { Car };
+var MovingCrosshair = /** @class */ (function () {
+    function MovingCrosshair(x, y, size, ctx) {
+        this.x = x;
+        this.y = y;
+        this.size = size;
+        this.ctx = ctx;
+        this.color = 'red';
+    }
+    MovingCrosshair.prototype.update = function (mouseX, mouseY) {
+        this.x = mouseX;
+        this.y = mouseY;
+    };
+    MovingCrosshair.prototype.draw = function () {
+        // Dibujar el círculo
+        this.ctx.beginPath();
+        this.ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
+        this.ctx.strokeStyle = this.color;
+        this.ctx.stroke();
+        this.ctx.closePath();
+        // Dibujar las líneas cruzadas
+        this.ctx.beginPath();
+        this.ctx.moveTo(this.x - this.size, this.y);
+        this.ctx.lineTo(this.x + this.size, this.y);
+        this.ctx.moveTo(this.x, this.y - this.size);
+        this.ctx.lineTo(this.x, this.y + this.size);
+        this.ctx.strokeStyle = this.color;
+        this.ctx.stroke();
+        this.ctx.closePath();
+    };
+    return MovingCrosshair;
+}());
+export { MovingCrosshair };

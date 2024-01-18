@@ -5,7 +5,7 @@ import { MathImg } from "./MathImg.js";
 import { Particle } from "./particle.js";
 import { ParticleText } from "./particle.js";
 import { CanvasLocal } from './canvasLocal.js';
-import { TunnelCircle, MazeBall, ColorWheel, Clock, Car  } from './nueva.js';
+import { TunnelCircle, MazeBall, ColorWheel, Clock, Car, MovingCrosshair   } from './nueva.js';
 
 
 
@@ -517,6 +517,31 @@ function iniciarAnimacionCar() {
   initCar();
   animateCar();
 }
+
+
+
+///// operacion 6 
+
+let movingCrosshair: MovingCrosshair;
+
+function initMovingCrosshair() {
+  movingCrosshair = new MovingCrosshair(pantalla2.canvas.width / 2, pantalla2.canvas.height / 2, 20, ctx);
+}
+
+function animateMovingCrosshair() {
+  ctx.clearRect(0, 0, pantalla2.canvas.width, pantalla2.canvas.height);
+  ctx.drawImage(imgLocal.getImage(), 0, 0, pantalla2.canvas.width, pantalla2.canvas.height);
+
+  movingCrosshair.update(mouse.x, mouse.y);
+  movingCrosshair.draw();
+
+  requestAnimationFrame(animateMovingCrosshair);
+}
+
+function startMovingCrosshair() {
+  initMovingCrosshair();
+  animateMovingCrosshair();
+}
 ////////////////////////////////////
 function histogramas(evt: any): void{
   const imagenSal: ImageType = new ImageType(pantalla1, imgLocal.getImage());
@@ -647,3 +672,5 @@ document.getElementById("inicioLaberintoCambiante").addEventListener('click', in
 document.getElementById("iniciarwhell").addEventListener('click', iniciarwhell, false);
 document.getElementById("iniciarRelojes").addEventListener('click', iniciarRelojes, false);
 document.getElementById("iniciarauto").addEventListener('click', iniciarAnimacionCar, false);
+
+document.getElementById("iniciarmira").addEventListener('click', startMovingCrosshair, false);
